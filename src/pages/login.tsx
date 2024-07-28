@@ -4,7 +4,7 @@ import { FormError } from "../components/form-error";
 import { gql, useMutation } from '@apollo/client';
 
 const LOGIN_MUTATION = gql`
-  mutation PotatoMutation($email: String!, $password: String!) {
+  mutation loginMutation($email: String!, $password: String!) {
     login(input: { email: $email, password: $password }) {
       ok
       token
@@ -21,13 +21,13 @@ interface ILoginForm {
 
 export const Login = () => {
   const { register, getValues, formState: { errors }, handleSubmit } = useForm<ILoginForm>();
-  const [loginMutation] = useMutation(LOGIN_MUTATION);
+  const [loginMutation, { data }] = useMutation(LOGIN_MUTATION, {variables:{email:'asd', password: '1234'}});
   const onSubmit = () => {
     const { email, password } = getValues();
     loginMutation({
       variables: {
         email,
-        password: 1234,
+        password,
       },
     });
   };
