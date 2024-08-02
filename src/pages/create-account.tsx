@@ -29,9 +29,34 @@ export const CreateAccount = () => {
       role: UserRole.Client,
     },
   });
-  const [createAccountMutation] = useMutation(CREATE_ACCOUNT_MUTATION);
-  const onSubmit = () => {};
-  console.log(watch());
+  const history = useHistory();
+  const onCompleted = (data: createAccountMutation) => {
+    const {
+      createAccount: { ok },
+    } = data;
+    if (ok) {
+      history.push("/login");
+    }
+  };
+  const [
+    createAccountMutation,
+    { loading, data: createAccountMutationResult },
+  ] = useMutation<createAccountMutation, createAccountMutationVariables>(
+    CREATE_ACCOUNT_MUTATION,
+    {
+      onCompleted,
+    }
+  );
+  const onSubmit = () => {
+    if (!loading) {
+      const { email, password, role } = getValues();
+      createAccountMutation({
+        variables: {
+          createAccountInput: { email, password, role },
+        },
+      });
+    }
+  };
   return (
     <div className="h-screen flex items-center flex-col mt-10 lg:mt-28">
       <Helmet>
@@ -58,15 +83,15 @@ export const CreateAccount = () => {
             <FormError errorMessage={errors.email?.message} />
           )}
           <input
-            ref={register({ required: "Password is required" })}
+            {...register("email", { required: "This is required", pattern: /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/, }, )}
             required
             name="password"
             type="password"
             placeholder="Password"
             className="input"
           />
-          {errors.password?.message && (
-            <FormError errorMessage={errors.password?.message} />
+          {errors.email?.type === "pattern" && (
+            <FormError errorMessage={"Please enter a valid email"} />
           )}
           {errors.password?.type === "minLength" && (
             <FormError errorMessage="Password must be more than 10 chars." />
@@ -82,9 +107,14 @@ export const CreateAccount = () => {
           </select>
           <Button
             canClick={formState.isValid}
-            loading={false}
+            loading={loading}
             actionText={"Create Account"}
           />
+          {createAccountMutationResult?.createAccount.error && (
+            <FormError
+              errorMessage={createAccountMutationResult.createAccount.error}
+            />
+          )}
         </form>
         <div>
           Already have an account?{" "}

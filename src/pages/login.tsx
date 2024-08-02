@@ -77,7 +77,7 @@ export const Login = () => {
             <FormError errorMessage={errors.email?.message} />
           )}
           <input
-            {...register("email", { required: "This is required" })}
+            {...register("email", { required: "This is required", pattern: /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/, }, )}
             required
             name="password"
             type="password"
@@ -92,7 +92,7 @@ export const Login = () => {
           )}
           <Button
             canClick={formState.isValid}
-            loading={loading}
+            loading={false}
             actionText={"Log in"}
           />
           {loginMutationResult?.login.error && (
