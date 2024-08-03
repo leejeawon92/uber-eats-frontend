@@ -6,6 +6,8 @@ import nuberLogo from "../images/logo.svg";
 import { Button } from '../components/button';
 import { Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
+import { LOCALSTORAGE_TOKEN } from '../constants';
+import { authTokenVar } from '../apollo';
 
 const LOGIN_MUTATION = gql`
   mutation loginMutation($loginInput: LoginInput!) {
@@ -33,9 +35,9 @@ export const Login = () => {
     const {
       login: { ok, token },
     } = data;
-    if (ok) {
-      console.log(token);
-    }
+    if (ok && token) {
+      localStorage.setItem(LOCALSTORAGE_TOKEN, token);
+      authTokenVar(token);
   };
   const [loginMutation, { data: loginMutationResult }, loading] = useMutation(LOGIN_MUTATION, {onCompleted,});
   const onSubmit = () => {

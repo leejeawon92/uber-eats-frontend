@@ -35,6 +35,7 @@ export const CreateAccount = () => {
       createAccount: { ok },
     } = data;
     if (ok) {
+      alert("Account Created! Log in now!");
       history.push("/login");
     }
   };
@@ -63,7 +64,7 @@ export const CreateAccount = () => {
         <title>Create Account | Nuber Eats</title>
       </Helmet>
       <div className="w-full max-w-screen-sm flex flex-col px-5 items-center">
-        <img src={nuberLogo} className="w-52 mb-10" />
+        <img src={nuberLogo} className="w-52 mb-10" alt="Nuber Eats />
         <h4 className="w-full font-medium text-left text-3xl mb-5">
           Let's get started
         </h4>
@@ -83,7 +84,7 @@ export const CreateAccount = () => {
             <FormError errorMessage={errors.email?.message} />
           )}
           <input
-            {...register("email", { required: "This is required", pattern: /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/, }, )}
+            {...register("email", { required: "This is required", pattern: /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/, }, )}
             required
             name="password"
             type="password"
