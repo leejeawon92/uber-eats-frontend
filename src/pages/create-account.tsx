@@ -2,7 +2,7 @@ import { gql, useMutation } from "@apollo/client";
 import React from "react";
 import Helmet from "react-helmet";
 import { useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Button } from "../components/button";
 import { FormError } from "../components/form-error";
 import nuberLogo from "../images/logo.svg";
@@ -29,14 +29,14 @@ export const CreateAccount = () => {
       role: UserRole.Client,
     },
   });
-  const history = useHistory();
+  const navigate = useNavigate();
   const onCompleted = (data: createAccountMutation) => {
     const {
       createAccount: { ok },
     } = data;
     if (ok) {
       alert("Account Created! Log in now!");
-      history.push("/login");
+      navigate("/another");
     }
   };
   const [
@@ -64,7 +64,7 @@ export const CreateAccount = () => {
         <title>Create Account | Nuber Eats</title>
       </Helmet>
       <div className="w-full max-w-screen-sm flex flex-col px-5 items-center">
-        <img src={nuberLogo} className="w-52 mb-10" alt="Nuber Eats />
+        <img src={nuberLogo} className="w-52 mb-10" alt="Nuber Eats" />
         <h4 className="w-full font-medium text-left text-3xl mb-5">
           Let's get started
         </h4>

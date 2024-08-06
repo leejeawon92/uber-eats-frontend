@@ -38,7 +38,8 @@ export const Login = () => {
     if (ok && token) {
       localStorage.setItem(LOCALSTORAGE_TOKEN, token);
       authTokenVar(token);
-  };
+    };
+  }
   const [loginMutation, { data: loginMutationResult }, loading] = useMutation(LOGIN_MUTATION, {onCompleted,});
   const onSubmit = () => {
     if (!loading) {
