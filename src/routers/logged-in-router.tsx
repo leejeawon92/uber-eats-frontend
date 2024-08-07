@@ -3,6 +3,8 @@ import { isLoggedInVar } from '../apollo';
 import { gql, useQuery } from "@apollo/client";
 import { BrowserRouter, Navigate, Route, Router, Routes, useNavigate } from 'react-router-dom';
 import { Restaurants } from '../pages/client/restaurants';
+import { Header } from '../components/header';
+import { useMe } from '../hooks/useMe';
 
 const ME_QUERY = gql`
   query meQuery {
@@ -22,7 +24,7 @@ const ClientRoutes = [
 ];
 
 export const LoggedInRouter = () => {
-  const { data, loading, error } = useQuery<meQuery>(ME_QUERY);
+  const { data, loading, error } = useMe();
   const navigate = useNavigate();
 
   if (!data || loading || error) {
@@ -34,6 +36,7 @@ export const LoggedInRouter = () => {
   }
   return (
     <BrowserRouter>
+      <Header />
       <Routes>
         {data.me.role === "Client" && ClientRoutes}
         <Navigate to="/" />
