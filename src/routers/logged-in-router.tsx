@@ -5,6 +5,7 @@ import { BrowserRouter, Navigate, Route, Router, Routes, useNavigate } from 'rea
 import { Restaurants } from '../pages/client/restaurants';
 import { Header } from '../components/header';
 import { useMe } from '../hooks/useMe';
+import { ConfirmEmail } from '../pages/user/confirm-email';
 
 const ME_QUERY = gql`
   query meQuery {
@@ -18,8 +19,11 @@ const ME_QUERY = gql`
 `;
 
 const ClientRoutes = [
-  <Route path="/" >
+  <Route key={1} path="/" >
     <Restaurants />
+  </Route>,
+  <Route key={2} path="/confirm" >
+    <ConfirmEmail />
   </Route>,
 ];
 
