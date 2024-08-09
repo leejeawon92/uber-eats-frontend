@@ -6,6 +6,7 @@ import { Restaurants } from '../pages/client/restaurants';
 import { Header } from '../components/header';
 import { useMe } from '../hooks/useMe';
 import { ConfirmEmail } from '../pages/user/confirm-email';
+import { EditProfile } from '../pages/user/edit-profile';
 
 const ME_QUERY = gql`
   query meQuery {
@@ -24,6 +25,9 @@ const ClientRoutes = [
   </Route>,
   <Route key={2} path="/confirm" >
     <ConfirmEmail />
+  </Route>,
+  <Route key={3} path="/edit-profile">
+    <EditProfile />
   </Route>,
 ];
 
