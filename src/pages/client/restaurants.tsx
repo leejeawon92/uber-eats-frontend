@@ -5,6 +5,10 @@ import {
   restaurantsPageQueryVariables,
 } from "../../__generated__/restaurantsPageQuery";
 import { Restaurant } from '../../components/restaurant';
+import { RESTAURANT_FRAGMENT } from '../../fragments';
+import { useForm } from 'react-hook-form';
+import { useNavigate } from 'react-router-dom';
+import { Helmet } from 'react-helmet';
 
 const RESTAURANTS_QUERY = gql`
   query restaurantsPageQuery($input: RestaurantsInput!) {
@@ -25,18 +29,17 @@ const RESTAURANTS_QUERY = gql`
       totalPages
       totalResults
       results {
-        id
-        name
-        coverImg
-        category {
-          name
-        }
-        address
-        isPromoted
+        ...RestaurantParts
       }
     }
   }
+  ${RESTAURANT_FRAGMENT}
 `;
+
+interface IFormProps {
+  searchTerm: string;
+}
+
 
 export const Restaurants = () => {
   const [page, setPage] = useState(1);
@@ -54,10 +57,28 @@ export const Restaurants = () => {
   const onNextPageClick = () => setPage((current) => current + 1);
   const onPrevPageClick = () => setPage((current) => current - 1);
 
+  const { register, handleSubmit, getValues } = useForm<IFormProps>();
+  const navigate = useNavigate();
+  const onSearchSubmit = () => {
+    const { searchTerm } = getValues();
+    navigate({
+      pathname: "/search",
+      search: `?term=${searchTerm}`,
+    });
+  };
+
   return (
     <div>
-      <form className="bg-gray-800 w-full py-40 flex items-center justify-center">
+      <Helmet>
+        <title>Home | Nuber Eats</title>
+      </Helmet>
+      <form
+        onSubmit={handleSubmit(onSearchSubmit)}
+        className="bg-gray-800 w-full py-40 flex items-center justify-center"
+      >
         <input
+          {...register({ required: true, min: 3 })}
+          name="searchTerm"
           type="Search"
           className="input rounded-md border-0 w-3/12"
           placeholder="Search restaurants..."

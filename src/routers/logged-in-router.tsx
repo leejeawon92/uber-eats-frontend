@@ -7,6 +7,8 @@ import { Header } from '../components/header';
 import { useMe } from '../hooks/useMe';
 import { ConfirmEmail } from '../pages/user/confirm-email';
 import { EditProfile } from '../pages/user/edit-profile';
+import { Search } from '../pages/client/search';
+import { NotFound } from '../pages/404';
 
 const ME_QUERY = gql`
   query meQuery {
@@ -29,6 +31,9 @@ const ClientRoutes = [
   <Route key={3} path="/edit-profile">
     <EditProfile />
   </Route>,
+  <Route key={4} path="/search">
+    <Search />
+  </Route>,
 ];
 
 export const LoggedInRouter = () => {
@@ -47,7 +52,9 @@ export const LoggedInRouter = () => {
       <Header />
       <Routes>
         {data.me.role === "Client" && ClientRoutes}
-        <Navigate to="/" />
+        <Route>
+          <NotFound />
+        </Route>
       </Routes>
     </BrowserRouter>
   );
